@@ -8,6 +8,7 @@ dependencies = [
     "cohere>=5.20.7",
     "matplotlib>=3.10.8",
     "numpy>=2.4.3",
+    "python-dotenv>=1.2.2",
     "seaborn>=0.13.2",
     "torch>=2.10.0",
 ]
