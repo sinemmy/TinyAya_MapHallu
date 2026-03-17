@@ -5,31 +5,21 @@ from pathlib import Path
 COHERE_API_KEY_ENV = "COHERE_API_KEY"  
 
 # ── Models ─────────────────────────────────────────────────────────────────────
-# TODO: confirm exact model ID strings with Sinem once Cohere provides them
 MODELS = {
-    "global": "tiny-aya-global",
-    "fire":   "tiny-aya-fire",
-    "earth":  "tiny-aya-earth",
-    "water":  "tiny-aya-water",
+    "global": "c4ai-aya-expanse-8b",
+    "earth":  "c4ai-aya-expanse-8b-earth",
+    "water":  "c4ai-aya-expanse-8b-water",
 }
 
-# ── Language coverage per model ────────────────────────────────────────────────
-# Each variant is tested on its own target languages PLUS others it wasn't
-# fine-tuned on — that cross-distribution gap is the core experimental axis.
-LANGUAGES = {
-    "global": ["en", "ar", "sw", "hi", "zh", "fr"],
-    "earth":  ["ar", "sw", "hi", "zh", "fr"],    # in-dist: ar, sw + out-dist: hi, zh, fr
-    "fire":   ["hi", "bn", "ar", "zh", "fr"],    # in-dist: hi, bn + out-dist: ar, zh, fr
-    "water":  ["zh", "fr", "de", "ar", "hi"],    # in-dist: zh, fr, de + out-dist: ar, hi
-}
+# Single language list used across ALL models — keeps comparison clean
+LANGUAGES = ["en", "ar", "fr", "de", "zh_cn", "ja", "ko", "tr", "he"]
 
-# ── In-distribution languages per model ───────────────────────────────────────
 IN_DISTRIBUTION = {
-    "global": ["en", "ar", "sw", "hi", "bn", "zh", "fr", "de"],
-    "earth":  ["ar", "sw"],
-    "fire":   ["hi", "bn"],
-    "water":  ["zh", "fr", "de"],
+    "global": ["en", "ar", "fr", "de", "zh_cn", "ja", "tr", "he", "ko"],
+    "earth":  ["ar", "tr", "he"],
+    "water":  ["zh_cn", "ja", "ko", "fr", "de"],
 }
+
 
 # ── Sampling ───────────────────────────────────────────────────────────────────
 SAMPLES_PER_PROMPT = 3     # sample each prompt multiple times to separate

@@ -40,7 +40,7 @@ def run_collection(prompts_df: pd.DataFrame, client: AyaClient) -> list[dict]:
         prompt_id = row["prompt_id"]
 
         for model_key, model_name in MODELS.items():
-            for lang in LANGUAGES[model_key]:
+            for lang in LANGUAGES:
                 prompt_col = f"prompt_{lang}"
                 answer_col = f"answer_{lang}"
 
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     print(f"Loading dataset: {args.dataset} ({args.n} prompts)...")
-    all_langs = list(set(l for langs in LANGUAGES.values() for l in langs))
+    all_langs = LANGUAGES
     if args.dataset == "mkqa":
         prompts_df = load_mkqa(languages=all_langs, n_samples=args.n)
     else:
