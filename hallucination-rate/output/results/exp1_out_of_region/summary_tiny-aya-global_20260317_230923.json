@@ -1,0 +1,10 @@
+{
+  "hallucination_rate": 0.696969696969697,
+  "accuracy": 0.30303030303030304,
+  "n_correct": 100,
+  "n_total": 330,
+  "n_no_gold": 0,
+  "model": "tiny-aya-global",
+  "run_id": "20260317_230923",
+  "experiment_name": "exp1_out_of_region"
+}

@@ -21,8 +21,8 @@ COHERE_API_KEY = os.getenv("COHERE_API") or os.getenv("COHERE_API_KEY")
 # ---------------------------------------------------------------------------
 # Models
 # ---------------------------------------------------------------------------
-MODEL_GLOBAL = "tiny-aya-global"
-MODEL_WATER = "tiny-aya-water"
+MODEL_GLOBAL = "command-a-translate-08-2025"
+MODEL_WATER =  "tiny-aya-global"# "tiny-aya-base" cant call 
 MODELS = [MODEL_GLOBAL, MODEL_WATER]
 
 # ---------------------------------------------------------------------------
