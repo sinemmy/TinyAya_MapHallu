@@ -34,7 +34,7 @@ N_PROMPTS      = 50        # start small, scale after pipeline is verified
 # ── Paths ──────────────────────────────────────────────────────────────────────
 BASE_DIR     = Path(__file__).resolve().parent.parent
 DATA_DIR     = BASE_DIR / "data"
-ANALYSIS_DIR = BASE_DIR / "analysis"
+ANALYSIS_DIR = BASE_DIR / "results"
 PLOTS_DIR    = BASE_DIR / "plots"
 
 # ── Rate limiting ──────────────────────────────────────────────────────────────
