@@ -6,9 +6,9 @@ COHERE_API_KEY_ENV = "COHERE_API_KEY"
 
 # ── Models ─────────────────────────────────────────────────────────────────────
 MODELS = {
-    "global": "c4ai-aya-expanse-8b",
-    "earth":  "c4ai-aya-expanse-8b-earth",
-    "water":  "c4ai-aya-expanse-8b-water",
+    "global": "tiny-aya-global",
+    "earth":  "tiny-aya-earth",
+    "water":  "tiny-aya-water",
 }
 
 # Single language list used across ALL models — keeps comparison clean
