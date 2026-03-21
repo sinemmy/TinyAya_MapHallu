@@ -39,7 +39,17 @@ Unified pipeline that runs all 3 experiment types (CMDR, Hallucination Rate, PSS
 - Deterministic iteration order: dataset → model → language → experiment → sample
 
 ## Implementation Status (2026-03-21)
-**All code written, syntax-checked, import-verified.** Remaining: dry-run with real API key.
+**Pipeline fully tested and working.** Successfully completed test runs with real API key.
+
+### Bugs Fixed
+- `run.py`: `cfg['num_samples']` → `cfg['num_dataset_samples']` (KeyError fix)
+- `data/load_mkqa.py`: Language alias mapping (`zh` → `zh_cn`) now preserves the caller's original language code in returned samples, so runner filtering works correctly
+- `model_client.py`: Added exponential backoff retry (up to 5 attempts, 2s base delay) for 403, 429, and 5xx errors
+
+### Known Behavior
+- `hi` and `sw` are not in MKQA — correctly skipped for MKQA base and PSS experiments
+- HuggingFace logs "Generating train split" for XNLI but the code uses `split="test"`
+- `trust_remote_code` warning for MKQA is cosmetic (HuggingFace deprecated the flag)
 
 ### Public API Reference
 | Module | Public API |

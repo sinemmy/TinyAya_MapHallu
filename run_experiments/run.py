@@ -33,7 +33,7 @@ def main(argv: list[str] | None = None) -> None:
     print(f"Langs  : {cfg['languages']}")
     print(f"Datasets: {cfg['datasets']}")
     print(f"Experiments: {cfg['experiments']}")
-    print(f"Samples: {cfg['num_samples']}")
+    print(f"Samples: {cfg['num_dataset_samples']}")
     print(f"Output : {cfg['output_dir']}")
     if cfg.get("_resumed"):
         print("(Resumed from existing run)")

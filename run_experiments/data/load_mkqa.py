@@ -110,7 +110,13 @@ def load_mkqa(languages: list[str], num_samples: int | None = 500, seed: int = 4
     unsupported = [l for l in resolved if l not in MKQA_LANGUAGES]
     if unsupported:
         logger.warning("Skipping languages not available in MKQA: %s. Valid: %s", unsupported, sorted(MKQA_LANGUAGES))
-    valid_languages = [l for l in resolved if l in MKQA_LANGUAGES]
+
+    # Build mapping from MKQA internal key back to the caller's original code
+    mkqa_to_orig = {}
+    for orig, res in zip(languages, resolved):
+        if res in MKQA_LANGUAGES:
+            mkqa_to_orig[res] = orig
+    valid_languages = list(mkqa_to_orig.keys())
 
     rows = []
     for idx, s in enumerate(sampled):
@@ -125,7 +131,7 @@ def load_mkqa(languages: list[str], num_samples: int | None = 500, seed: int = 4
                 continue
             rows.append({
                 "sample_id": idx,
-                "language": lang,
+                "language": mkqa_to_orig[lang],
                 "prompt_fields": {"query": q},
                 "gold_answers": ans,
             })

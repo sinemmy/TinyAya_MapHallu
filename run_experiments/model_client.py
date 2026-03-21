@@ -26,6 +26,10 @@ def _get_client() -> cohere.ClientV2:
     return _client
 
 
+_MAX_RETRIES = 5
+_BASE_DELAY = 2  # seconds
+
+
 def query_model(
     prompt: str,
     *,
@@ -38,6 +42,7 @@ def query_model(
     Send a single user-turn chat request and return the full response as a dict.
 
     Always sets ``logprobs=True``.
+    Retries with exponential backoff on rate-limit (429) and transient (403, 5xx) errors.
 
     Returns a dict with keys:
         text, finish_reason, usage, logprobs (raw list), response_json (full)
@@ -54,7 +59,19 @@ def query_model(
     if response_format is not None:
         kwargs["response_format"] = response_format
 
-    resp = co.chat(**kwargs)
+    for attempt in range(_MAX_RETRIES):
+        try:
+            resp = co.chat(**kwargs)
+            break
+        except Exception as e:
+            status = getattr(e, "status_code", None)
+            retryable = status in (403, 429) or (isinstance(status, int) and status >= 500)
+            if not retryable or attempt == _MAX_RETRIES - 1:
+                raise
+            delay = _BASE_DELAY * (2 ** attempt)
+            print(f"  [retry] attempt {attempt + 1}/{_MAX_RETRIES}, status {status}, "
+                  f"waiting {delay}s...")
+            time.sleep(delay)
 
     # Extract text
     text = ""
