@@ -65,7 +65,8 @@ def query_model(
             break
         except Exception as e:
             status = getattr(e, "status_code", None)
-            retryable = status in (403, 429) or (isinstance(status, int) and status >= 500)
+            # 5xx are server crashes — don't retry them, fail fast
+            retryable = status in (403, 429)
             if not retryable or attempt == _MAX_RETRIES - 1:
                 raise
             delay = _BASE_DELAY * (2 ** attempt)
