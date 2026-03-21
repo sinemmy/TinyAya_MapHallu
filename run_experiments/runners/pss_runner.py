@@ -91,6 +91,19 @@ def run_pss(cfg: dict) -> None:
                             except Exception as e:
                                 print(f"  [error] sample {sample['sample_id']} "
                                       f"variant {variant['variant_type']} rep {rep}: {e}")
+                                failure_record = {
+                                    "run_id": cfg["run_id"],
+                                    "dataset": "mkqa",
+                                    "model": model,
+                                    "language": language,
+                                    "sample_id": sample["sample_id"],
+                                    "rep": rep,
+                                    "experiment_type": "pss",
+                                    "variant_type": variant["variant_type"],
+                                    "failed": True,
+                                }
+                                fh.write(json.dumps(failure_record, ensure_ascii=False) + "\n")
+                                fh.flush()
                                 continue
 
                             seq_prob = calculate_sequence_probability(resp.get("logprobs"))

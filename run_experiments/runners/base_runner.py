@@ -131,6 +131,19 @@ def run_base(cfg: dict) -> None:
                                 )
                             except Exception as e:
                                 print(f"  [error] sample {sample['sample_id']} rep {rep}: {e}")
+                                failure_record = {
+                                    "run_id": cfg["run_id"],
+                                    "dataset": dataset,
+                                    "model": model,
+                                    "language": language,
+                                    "sample_id": sample["sample_id"],
+                                    "rep": rep,
+                                    "experiment_type": "base",
+                                    "variant_type": None,
+                                    "failed": True,
+                                }
+                                fh.write(json.dumps(failure_record, ensure_ascii=False) + "\n")
+                                fh.flush()
                                 continue
 
                             eval_fields = _evaluate(dataset, resp["text"], sample)
