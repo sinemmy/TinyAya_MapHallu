@@ -87,24 +87,20 @@ def load_mkqa(languages: list[str], num_samples: int | None = 500, seed: int = 4
     """
     Load MKQA samples for the given languages.
 
-    If num_samples is None, all samples are used.
+    Samples num_samples rows **per language** from the rows that have valid data
+    for that language, so every language always gets exactly num_samples records
+    (or as many as exist). If num_samples is None, all valid rows are used.
 
     Returns list of dicts:
         {
-            "sample_id": int,         # index within the sampled set
+            "sample_id": int,         # index in the raw MKQA dataset
             "language": str,
             "prompt_fields": {"query": str},
             "gold_answers": list,     # MKQA answer dicts with text/aliases
         }
-
-    Samples are aligned by sample_id across languages.
     """
     raw = _load_mkqa_raw()
     random.seed(seed)
-    if num_samples is None:
-        sampled = raw
-    else:
-        sampled = random.sample(raw, min(num_samples, len(raw)))
 
     # Resolve aliases (e.g. zh -> zh_cn) before validation
     resolved = [_LANGUAGE_ALIASES.get(l, l) for l in languages]
@@ -124,20 +120,26 @@ def load_mkqa(languages: list[str], num_samples: int | None = 500, seed: int = 4
     valid_languages = list(mkqa_to_orig.keys())
 
     rows = []
-    for idx, s in enumerate(sampled):
-        queries = s.get("queries") or {}
-        answers = s.get("answers") or {}
-        for lang in valid_languages:
-            q = (queries.get(lang) or "").strip()
-            if not q:
-                continue
-            ans = answers.get(lang) or []
-            if not _has_valid_gold_answer(ans):
-                continue
+    for lang in valid_languages:
+        # Collect all raw indices that have valid data for this language
+        valid_indices = [
+            i for i, s in enumerate(raw)
+            if (s.get("queries") or {}).get(lang, "").strip()
+            and _has_valid_gold_answer((s.get("answers") or {}).get(lang) or [])
+        ]
+
+        if num_samples is None:
+            selected = valid_indices
+        else:
+            selected = random.sample(valid_indices, min(num_samples, len(valid_indices)))
+
+        for idx in selected:
+            s = raw[idx]
             rows.append({
                 "sample_id": idx,
                 "language": mkqa_to_orig[lang],
-                "prompt_fields": {"query": q},
-                "gold_answers": ans,
+                "prompt_fields": {"query": s["queries"][lang].strip()},
+                "gold_answers": s["answers"][lang],
             })
+
     return rows

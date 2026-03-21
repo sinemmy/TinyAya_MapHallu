@@ -64,14 +64,14 @@ python run.py [OPTIONS]
 ### Examples
 
 ```bash
-# Full run for a single model — all languages, all samples, 2 reps
+# Full run for a single model — all languages, all samples, 5 reps
 # (hi and sw are XNLI-only; zh auto-maps to zh_cn for MKQA)
 python run.py --models tiny-aya-global \
               --languages ar de en ru th zh hi sw \
               --datasets xnli mkqa \
               --experiments base pss \
               --num-dataset-samples all \
-              --nreps 2
+              --nreps 5
 
 # Quick full test : all languages , 1 model, nreps 
 python run.py --models tiny-aya-global \
