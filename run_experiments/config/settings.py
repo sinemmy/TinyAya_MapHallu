@@ -32,6 +32,15 @@ def _deep_merge(base: dict, override: dict) -> dict:
     return merged
 
 
+def _parse_num_dataset_samples(value) -> int | None:
+    """Parse num_dataset_samples: 'all' → None (meaning use all), otherwise int."""
+    if value is None:
+        return None
+    if isinstance(value, str) and value.strip().lower() == "all":
+        return None
+    return int(value)
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Run experiments")
     p.add_argument("--models", nargs="+", help="Cohere model IDs")
@@ -39,7 +48,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--datasets", nargs="+", choices=["xnli", "mkqa"], help="Datasets")
     p.add_argument("--experiments", nargs="+", choices=["base", "pss"], help="Experiment types")
     p.add_argument("--config", type=str, help="Path to YAML config override file")
-    p.add_argument("--num-dataset-samples", type=int, help="Number of questions to draw from the dataset per language")
+    p.add_argument("--num-dataset-samples", type=str, help="Number of questions to draw per language, or 'all' for the full dataset")
     p.add_argument("--nreps", type=int, help="Number of repeated API calls per question (default: 1)")
     p.add_argument("--temperature", type=float, help="Sampling temperature")
     p.add_argument("--max-tokens", type=int, help="Max output tokens")
@@ -83,7 +92,7 @@ def load_config(argv: list[str] | None = None) -> dict:
         "languages": args.languages,
         "datasets": args.datasets,
         "experiments": args.experiments,
-        "num_dataset_samples": args.num_dataset_samples,
+        "num_dataset_samples": _parse_num_dataset_samples(args.num_dataset_samples) if args.num_dataset_samples is not None else None,
         "nreps": args.nreps,
         "temperature": args.temperature,
         "max_tokens": args.max_tokens,
@@ -92,6 +101,9 @@ def load_config(argv: list[str] | None = None) -> dict:
     for k, v in cli_map.items():
         if v is not None:
             cfg[k] = v
+
+    # Normalize num_dataset_samples from YAML (could be "all" string)
+    cfg["num_dataset_samples"] = _parse_num_dataset_samples(cfg.get("num_dataset_samples", 300))
 
     # Generate run identity
     now = datetime.now(timezone.utc)

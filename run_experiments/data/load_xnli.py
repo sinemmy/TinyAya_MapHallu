@@ -11,9 +11,11 @@ from datasets import load_dataset
 _LABEL_MAP = {0: "entailment", 1: "neutral", 2: "contradiction"}
 
 
-def load_xnli(languages: list[str], num_samples: int = 300, seed: int = 42) -> list[dict]:
+def load_xnli(languages: list[str], num_samples: int | None = 300, seed: int = 42) -> list[dict]:
     """
     Load aligned XNLI samples for each language.
+
+    If num_samples is None, all samples are used.
 
     Returns list of dicts:
         {
@@ -28,7 +30,7 @@ def load_xnli(languages: list[str], num_samples: int = 300, seed: int = 42) -> l
     rows = []
     for lang in languages:
         ds = load_dataset("xnli", lang, split="test")
-        n = min(num_samples, len(ds))
+        n = len(ds) if num_samples is None else min(num_samples, len(ds))
         for i in range(n):
             rows.append({
                 "sample_id": i,

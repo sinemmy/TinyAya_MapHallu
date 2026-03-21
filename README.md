@@ -52,7 +52,7 @@ python run.py [OPTIONS]
 | `--languages` | Language codes (space-separated) | from config |
 | `--datasets` | `xnli`, `mkqa`, or both | `xnli` |
 | `--experiments` | `base`, `pss`, or both | `base pss` |
-| `--num-dataset-samples` | Number of questions to draw per language | `300` |
+| `--num-dataset-samples` | Number of questions to draw per language, or `all` | `300` |
 | `--nreps` | Repeated API calls per question (independent, stateless) | `1` |
 | `--temperature` | Sampling temperature | `0.3` |
 | `--max-tokens` | Max output tokens | `512` |

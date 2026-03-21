@@ -54,4 +54,19 @@ See run_experiments/PLAN.md for full details and verification steps.
 ## Environment
 - Uses `uv` for package management; activate with `source .venv/bin/activate`
 - Key dependencies: `cohere`, `datasets` (HuggingFace), `pyyaml`, `tqdm`, `python-dotenv`
+
+## CLI Quick Reference (run_experiments/)
+```bash
+python run.py --models tiny-aya-global tiny-aya-fire \
+              --languages en fr ar \
+              --datasets xnli mkqa \
+              --experiments base pss \
+              --num-dataset-samples 300 \
+              --nreps 1
+```
+- `--num-dataset-samples`: integer or `all` (uses full dataset)
+- `--nreps`: number of independent repeated API calls per question (default 1)
+- `--resume {run_id}`: resume an interrupted run
+- Config key in code/YAML: `num_dataset_samples` (int or None for all), `nreps` (int)
+- Each JSONL record includes a `rep` field (0-indexed)
 - No multi-sample (n) parameter — 1 response per call

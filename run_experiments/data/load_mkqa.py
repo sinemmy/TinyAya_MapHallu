@@ -66,9 +66,11 @@ def _load_mkqa_raw(max_examples: int | None = None) -> list[dict]:
     return rows
 
 
-def load_mkqa(languages: list[str], num_samples: int = 500, seed: int = 42) -> list[dict]:
+def load_mkqa(languages: list[str], num_samples: int | None = 500, seed: int = 42) -> list[dict]:
     """
     Load MKQA samples for the given languages.
+
+    If num_samples is None, all samples are used.
 
     Returns list of dicts:
         {
@@ -82,7 +84,10 @@ def load_mkqa(languages: list[str], num_samples: int = 500, seed: int = 42) -> l
     """
     raw = _load_mkqa_raw()
     random.seed(seed)
-    sampled = random.sample(raw, min(num_samples, len(raw)))
+    if num_samples is None:
+        sampled = raw
+    else:
+        sampled = random.sample(raw, min(num_samples, len(raw)))
 
     rows = []
     for idx, s in enumerate(sampled):

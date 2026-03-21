@@ -181,13 +181,16 @@ The code in run_experiments/ was adapted from these existing files (for historic
 - Both XNLI and MKQA use `response_format={"type": "json_object"}` — XNLI asks for `{"label": "..."}`, MKQA for `{"answer": "..."}`
 - `model_client.py` serialises Cohere logprob objects into plain dicts for JSON storage via `_logprobs_to_serialisable()`
 - `run.py` uses `sys.path.insert(0, ...)` so imports work when invoked from any directory
+- CLI flag `--num-dataset-samples` accepts an integer or `all`; stored in config as `num_dataset_samples` (int or None for all)
+- CLI flag `--nreps` controls repeated independent API calls per question; stored in config as `nreps` (int, default 1)
+- Each JSONL record includes a `rep` field (0-indexed); resume logic tracks `(sample_id, rep)` pairs for base and `(sample_id, variant_type, rep)` for PSS
 
 ### Actual function/class names (for import reference):
 | Module | Public API |
 |---|---|
 | `config.settings` | `load_config(argv)`, `save_config(cfg, output_dir)` |
-| `data.load_xnli` | `load_xnli(languages, num_samples, seed)` |
-| `data.load_mkqa` | `load_mkqa(languages, num_samples, seed)` |
+| `data.load_xnli` | `load_xnli(languages, num_samples=300, seed=42)` — `num_samples=None` means all |
+| `data.load_mkqa` | `load_mkqa(languages, num_samples=500, seed=42)` — `num_samples=None` means all |
 | `model_client` | `query_model(prompt, model, ...)`, `calculate_sequence_probability(logprobs_data)` |
 | `prompts.xnli` | `build_xnli_prompt(premise, hypothesis)`, `XNLI_RESPONSE_FORMAT` |
 | `prompts.mkqa` | `build_mkqa_prompt(query, language)`, `MKQA_RESPONSE_FORMAT` |
