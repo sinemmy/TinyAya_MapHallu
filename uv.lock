@@ -1301,6 +1301,15 @@ wheels = [
 ]
 
 [[package]]
+name = "nbstrip"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8f/82/9cdf9e2056c98555240cb3348b72c9061266b7c863daee5b510a8479de33/nbstrip-0.1.1.tar.gz", hash = "sha256:5756f9e8077bb286b8c5761b5c4dbc3066823bb8d430edfb68f91a6f8f51ec79", size = 2776, upload-time = "2022-03-23T15:16:56.706Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/49/ee/5975d02711b64a3ce9c8b961ecf0a2191e86651bb1a39ad508907c3ed15e/nbstrip-0.1.1-py3-none-any.whl", hash = "sha256:46d69e9aa3148596949be387ee5aba6bfaf6adfe5e69157120e31350c64587aa", size = 3231, upload-time = "2022-03-23T15:16:54.892Z" },
+]
+
+[[package]]
 name = "nest-asyncio"
 version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2440,6 +2449,7 @@ dependencies = [
     { name = "jupyter-core" },
     { name = "matplotlib" },
     { name = "matplotlib-inline" },
+    { name = "nbstrip" },
     { name = "nest-asyncio" },
     { name = "numpy" },
     { name = "pandas" },
@@ -2481,6 +2491,7 @@ requires-dist = [
     { name = "jupyter-core", specifier = "==5.9.1" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "matplotlib-inline", specifier = "==0.2.1" },
+    { name = "nbstrip", specifier = ">=0.1.1" },
     { name = "nest-asyncio", specifier = "==1.6.0" },
     { name = "numpy", specifier = ">=2.4.3" },
     { name = "pandas", specifier = ">=3.0.1" },

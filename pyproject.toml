@@ -21,6 +21,7 @@ dependencies = [
     "jupyter-core==5.9.1",
     "matplotlib>=3.10.8",
     "matplotlib-inline==0.2.1",
+    "nbstrip>=0.1.1",
     "nest-asyncio==1.6.0",
     "numpy>=2.4.3",
     "pandas>=3.0.1",

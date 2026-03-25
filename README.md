@@ -19,6 +19,17 @@ echo 'COHERE_API_KEY=your-key-here' > .env
 # 4. Run an experiment
 cd run_experiments
 python run.py --models tiny-aya-global --languages en --datasets xnli --experiments base --num-dataset-samples 5
+
+# 5. Run analysis 
+# TODO
+
+# 6. nbstrip and GIT - optional for jupyter notebook handling
+# # Add the git filter
+git config filter.nbstrip.clean 'nbstrip'
+git config filter.nbstrip.smudge cat
+
+# Add to .gitattributes
+echo '*.ipynb filter=nbstrip' >> .gitattributes
 ```
 
 ## Project Structure
